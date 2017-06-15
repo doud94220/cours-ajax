@@ -5,6 +5,8 @@
 <meta charset="iso-8859-1">
 <link rel="stylesheet" href="styles/layout.css" type="text/css">
 <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
+      <!-- Appel fihier Js -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 </head>
 <body>
 <div class="wrapper row1">
@@ -27,8 +29,14 @@
 <!-- content -->
 <div class="wrapper row2">
   <div id="container" class="clear">
-    <!-- Slider -->
-    <section id="slider"><a href="#"><img src="images/demo/960x360.gif" alt=""></a></section>
+
+    <!-- Slider = CARROUSSEL-->
+    <section id="slider">
+      <a href="#">
+        <img id="sliderImage" src="images/demo/960x360.gif" alt="">
+      </a>
+    </section>
+
     <!-- main content -->
     <div id="homepage">
       <!-- services area -->
@@ -81,7 +89,10 @@
     <!-- main content -->
     <div id="content">
       <section id="posts" class="last clear">
-        <ul>
+
+        <!-- JE COMMENTE LA PARTIE INDONECTUS -->
+
+        <!-- <ul>
           <li>
             <article class="clear">
               <figure><img src="images/demo/180x150.gif" alt="">
@@ -104,7 +115,26 @@
               </figure>
             </article>
           </li>
-        </ul>
+        </ul> -->
+
+        <!-- JE REMPLACE LA ZONE PAR UN FORMULAIRE -->
+        <form action="" method="POST">
+            <label for="title">NOM : </label><br>
+            <input type="text" name="nom"><br><br>
+            <label for="prenom">Prénom : </label><br>
+            <input type="text" name="prenom"><br><br>
+            <label for="dateNaissance">Date naissance : </label><br>
+            <input type="date" name="dateNaissance"><br><br>
+            <label for="language">Poste (fonction) : </label><br>
+            <select name="poste">
+              <option value="">Faites un choix</option>
+              <option value="CIO">CIO</option>
+              <option value="CEO">CEO</option>
+              <option value="SIO">SIO</option>
+            </select><br><br>
+            <input type="submit" value="Valider"><br><br>
+        </form>
+
       </section>
     </div>
     <!-- right column -->
@@ -136,5 +166,9 @@
     <p class="fl_right">Template by <a href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
   </footer>
 </div>
+
+  <!-- APPEL FICHIER JS -->
+  <script type="text/javascript" src="scripts/carroussel.js"></script>
 </body>
+
 </html>
