@@ -1,6 +1,6 @@
 $(function() //déclenchée lors de chargement total du DOM
 {
-	// MON CODE
+	// MON CODE => A ESSAYER DE FAIRE MARCHE JEUDI SOIR
 	// let tabUrlImage = ['images/sport_1.jpg', 'images/sport_2.jpg', 'images/sport_3.jpg'];
 	// console.log(tabUrlImage);
 
