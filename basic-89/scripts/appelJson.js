@@ -125,9 +125,7 @@ $(function() //déclenchée lors de chargement total du DOM
 				$(this).text("...");
 			}
 		});
-
 		/// NOTE : LE PROF A GERER LE CLICK DANS LA BOUCLE FOR ///
-
 	});
 	 
 	request2.fail(function(jqXHR, textStatus)
@@ -135,4 +133,98 @@ $(function() //déclenchée lors de chargement total du DOM
 	  	alert( "Request 2 has failed: " + textStatus );
 	});
 
-})
+
+	////////// EXO 5 : Afficher pleins de photos par clic successif //////////
+
+	//////// Mon Code :
+
+	var request3 = $.ajax(
+	{
+	  url: "https://jsonplaceholder.typicode.com/photos",
+	  method: "GET",
+	  dataype : "json" //Optionnel
+	});
+
+	request3.done(function(jsonData3)
+	{
+		let cpt = 0; //Compteur du nombre d'images affichées
+
+		//On boucle sur les 3 premiers elements du json retournés par request 3
+		for(i=1;i<4;i++) //j'ajuste les indices pour un depart à 0 pour me caller sur les indices de json
+		{
+			//On remplace les 3 images qui sont visibles au chargment de la page
+			$('#latest').find('img').eq(i).attr('src',jsonData3[i].url);
+		}
+		cpt = i; //Maj du compteur d'images affichées
+
+		//Gestion click sur 'View All Our Recent Work Her' => J'en affiche 10 de plus
+		$("#latest figcaption a").click(function(e)
+		{
+			e.preventDefault();
+
+			//On boucle sur les 10 elements suivants ceux deja chargés du json retournés par request 3
+			for (j=cpt;j<cpt+10;j++)
+			{
+				let resteDivisionPar3 = j%3;
+				if (resteDivisionPar3 == 0)
+				{
+					//J'ajoute un <li><img></li avec la classe 'one_third lastbox' dans <img>
+					$('#latest ul').append("<li class='one_third lastbox'><img src=" + jsonData3[j].url + " width='290' height='180' alt=''></li>");
+					// Note : append() pour ajouter à la fin
+				}
+				else 
+				{
+					//J'ajoute un <li><img></li avec la classe 'one_third' dans <img>
+					$('#latest ul').append("<li class='one_third'><img src=" + jsonData3[j].url + " width='290' height='180' alt=''></li>");
+				}
+			}
+			cpt = j; //Maj du compteur d'images affichées
+		}); //Fin gestion click
+	});
+
+	request3.fail(function(jqXHR, textStatus)
+	{
+	  	alert( "Request 3 has failed: " + textStatus );
+	});
+
+
+
+
+
+	////////// Code de Mike pour exo 5 :
+
+	let increment = 0;//init d'une variable qui compte le nombre de photos du json affichés sur 'View All Our Recent Work Her'
+	let picture; //servira a récupérer data en dehors du done
+	$.get('https://jsonplaceholder.typicode.com/photos')
+	.done(function(data)
+	{
+		for (let a=0; a<3 ; a++)
+		{
+			$(".one_third").eq(a).children().attr('src',data[a].url); //changement de scr sur l'image
+		}
+		picture=data; //on remonter data dans le done grace à variable picture
+	});
+
+	$("figcaption > a").click(function(e)
+	{
+		e.preventDefault();
+
+		var content = "";
+		var indexLi = $(".one_third").length;
+
+		for (let i=increment; i<increment+10;i++)
+		{
+			var classHtml = ";"
+			if ((indexLi+1)%3 == 0)
+			{
+				classHtml = "Lastbox";
+			}
+			content += .....;
+		}
+		increment += 10;
+		}
+	});
+
+
+
+});
