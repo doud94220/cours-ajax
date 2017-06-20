@@ -124,10 +124,13 @@
         <form action="users.php" method="POST" id="mon_beau_form">
             <label for="nom">NOM : </label><br>
             <input type="text" name="nom"><br><br>
+
             <label for="prenom">Prenom : </label><br>
             <input type="text" name="prenom"><br><br>
+
             <label for="dateNaissance">Date naissance : </label><br>
-            <input type="date" name="dateNaissance"><br><br>
+            <input type="date" name="dateNaissance"><br><br> <!--  Bien penser à mettre type=date -->
+
             <label for="poste">Poste (fonction) : </label><br>
             <select name="poste">
               <option value="">Faites un choix</option>
@@ -135,6 +138,7 @@
               <option value="CEO">CEO</option>
               <option value="SIO">SIO</option>
             </select><br><br>
+
             <input type="submit" value="Valider"><br><br>
         </form>
 

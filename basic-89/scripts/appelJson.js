@@ -30,9 +30,10 @@ $(function() //déclenchée lors de chargement total du DOM
 		{
  	 		var nameAjaxElmt = unElmtDeJsonData.name;
 			content += '<li id="User-' + unElmtDeJsonData.id + '"><a href="#">' + unElmtDeJsonData.name + '</a></li>';
+			//Je rajoute un id (pour que l'exo 3 où j'ai recopié sur Mike) fonctionne
 		});
 
-		$("#appelJson ul").html(content); //Creation des li dans le ul de l'id appelJson
+		$("#appelJson ul").html(content); //Creation des li dans le ul de d'id appelJson qu'est vide, donc on peut faire html()
 
 
 		////////// EXO 3 : Clic sur les liens json //////////
@@ -42,16 +43,15 @@ $(function() //déclenchée lors de chargement total du DOM
 			e.preventDefault();
 
 			/** Recuperation de l'id **/
-			var idUser = $(this).attr("id"); //on recupere l'attribut id creer tout à l'heure dans le foreach
-			console.log(idUser.split("-")); // User-3 = array("User",3); // Couper par rapport au caratere '-'
-			idUser = idUser.split("-");
+			var idUser = $(this).attr("id"); //on recupere l'attribut id créé tout à l'heure dans le foreach
+			tabIdUser = idUser.split("-"); //couper par rapport au caratere '-'
 
 			/** Requet Ajax ciblé sur un seul element **/
 			var ficheUserCible = $.ajax(
 			{
 				url: "https://jsonplaceholder.typicode.com/users",
 				method: "GET",
-				data: { id: idUser[1] },
+				data: { id: tabIdUser[1] }, //tabIdUSer[1] retourne l'id de json
 				dataType: "json" // optionel
 			});
 
@@ -92,7 +92,7 @@ $(function() //déclenchée lors de chargement total du DOM
 				$('#services > article').eq(i).children('p').eq(0).data('bodyAjaxElmt', bodyAjaxElmt); //je stocke la chaine complete du "body json" dans le même <p> avec data()
 				$('#services > article').eq(i).children('p').eq(0).data('bodyAjaxElmtTronque', bodyAjaxElmtTronque); //je stocke la chaine tronquée du "body json" dans le même <p> avec data()
 			}
-			else
+			else //Si y'a moins de 100 caractère
 			{
 				$('#services > article').eq(i).children('p').eq(0).text(bodyAjaxElmt); //j'affiche le "body json" pas tronqué
 				// Note : pas val() mais text()......je perds 15 min là-dessus
@@ -101,12 +101,11 @@ $(function() //déclenchée lors de chargement total du DOM
 			// Remplacer ReadMore par  ... dans les 4 zones
 			$('#services > article').eq(i).children('p').eq(1).children('a').text("...");
 		}
-
 		
-		// Gérer le CLICK sur les liens ... u ReadLess
+		// Gérer le CLICK sur les liens ... ou ReadLess
 		$("#services > article > p > a").click(function(e)
 		{
-			e.preventDefault(); //Comme la cible du lien  = #, ca va juste empêcher de remonter en haut de page après le click
+			e.preventDefault(); //Comme la cible du lien est '#', ca va juste empêcher de remonter en haut de page après le click
 
 			if ($(this).text() == "...")
 			{
@@ -168,13 +167,13 @@ $(function() //déclenchée lors de chargement total du DOM
 				let resteDivisionPar3 = j%3;
 				if (resteDivisionPar3 == 0)
 				{
-					//J'ajoute un <li><img></li avec la classe 'one_third lastbox' dans <img>
+					//J'ajoute un <li><img></li> avec la classe 'one_third lastbox' dans <img>
 					$('#latest ul').append("<li class='one_third lastbox'><img src=" + jsonData3[j].url + " width='290' height='180' alt=''></li>");
-					// Note : append() pour ajouter à la fin
+					// Note : append() pour ajouter à la fin de l'element qui invoque appedn()
 				}
 				else 
 				{
-					//J'ajoute un <li><img></li avec la classe 'one_third' dans <img>
+					//J'ajoute un <li><img></li> avec la classe 'one_third' dans <img>
 					$('#latest ul').append("<li class='one_third'><img src=" + jsonData3[j].url + " width='290' height='180' alt=''></li>");
 				}
 			}
@@ -186,45 +185,4 @@ $(function() //déclenchée lors de chargement total du DOM
 	{
 	  	alert( "Request 3 has failed: " + textStatus );
 	});
-
-
-
-
-
-	////////// Code de Mike pour exo 5 :
-
-	let increment = 0;//init d'une variable qui compte le nombre de photos du json affichés sur 'View All Our Recent Work Her'
-	let picture; //servira a récupérer data en dehors du done
-	$.get('https://jsonplaceholder.typicode.com/photos')
-	.done(function(data)
-	{
-		for (let a=0; a<3 ; a++)
-		{
-			$(".one_third").eq(a).children().attr('src',data[a].url); //changement de scr sur l'image
-		}
-		picture=data; //on remonter data dans le done grace à variable picture
-	});
-
-	$("figcaption > a").click(function(e)
-	{
-		e.preventDefault();
-
-		var content = "";
-		var indexLi = $(".one_third").length;
-
-		for (let i=increment; i<increment+10;i++)
-		{
-			var classHtml = ";"
-			if ((indexLi+1)%3 == 0)
-			{
-				classHtml = "Lastbox";
-			}
-			content += .....;
-		}
-		increment += 10;
-		}
-	});
-
-
-
-});
+}); //Fin fonction globale

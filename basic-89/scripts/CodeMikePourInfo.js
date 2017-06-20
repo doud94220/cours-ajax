@@ -90,34 +90,42 @@ $(function(){
 		
 		
 		/************ START NEW **************/
-		let increment = 0;
-		let pictures;
+		///// A PARTIR DE LA C'EST MOI QUI METS LES COMMENTAIRES SUR LE CODE DE MIKE POUR L'EXO 5 DE VENDREDI
+		let increment = 0; //Init compteur d'images affichées, cette variable est globale
+		let pictures; //Servira à stocker en global la variable data du done
 		
-		$.get( "https://jsonplaceholder.typicode.com/photos")
-		.done(function( data ) {
-			for(let a = 0; a < 3; a++)
-				$(".one_third").eq(a).children().attr('src',data[a].url);
-			pictures = data;
+		$.get( "https://jsonplaceholder.typicode.com/photos") //Sympa cette forme contractée du GET
+		.done(function( data )
+		{
+			for(let a=0; a<3; a++)
+				$(".one_third").eq(a).children().attr('src',data[a].url); //il change les url des 3 premières images
+				//Mike met pas d'accolades pour le for pake une seuke ligne dedans
+			pictures = data; //je stocke data dans une variable globale
 		});
 		
-		$("figcaption > a").click(function(e){
+		//Gestion du click
+		$("figcaption > a").click(function(e)
+		{
 			e.preventDefault();
-			var content = "";
+
+			var content = ""; //Servira à stocker les 10 images à rajouter
 			var indexLi = $(".one_third").length;
+			//indexLi contiendra le nbre d'images affichées cad le nombre de classes one_third
+			//indexLi est une variable locale, connue que dans la gestion du click
 			
-			for(let i = increment; i < increment+10; i++){
-				var classHtml = "";
-				if((indexLi+1)%3 == 0)
-					classHtml = "lastbox";
+			//On boucle 10 fois pour chopper les 10 elements suivants de json
+			for(let i = increment; i < increment+10; i++)
+			{
+				var classHtml = ""; //Init variable qui contiendra la classe de l'image
+				if((indexLi+1)%3 == 0) //Test si numéro image est un multiple de trois (en faisant +1 pour ajuster les indices du for et de json)
+					classHtml = "lastbox"; //Si oui classe="lastbox"
+				//Là on n'est plus dans le if
+				//Dessous on alimente content avec <li><img></li> avec les bonnes classes
 				content += ' <li class="one_third '+classHtml+'"><img src="'+pictures[i].url+'" width="290" height="180" alt=""></li>';
-				indexLi++;
+				indexLi++; //Incrémentation à chaque tour de boucle du nombre d'images affichées
 			}
-			$(".clear").append(content);
-			increment += 10;
+
+			$(".clear").append(content); //On ajoute le content à la fin de la classe 'clear'
+			increment += 10; //On rajoute 10 au nombre d'images affichées
 		});
-		
-		
-		
-		
-		
 })
