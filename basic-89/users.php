@@ -1,51 +1,48 @@
 <?php
-	//Initialisation PDO pour accès BDD
-	$pdo = new PDO(	'mysql:host=localhost;dbname=mike',
-				'root',
-				'',
-				array(
-					PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
-					PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-					)
-				);
+ 	/************************ Code de MIKE recopié ************************/
+    try
+    {
+        $dbh = new PDO('mysql:host=localhost;dbname=mike','root','');
+        $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
+    }
+    catch(PDOException $e)
+    {
+        echo 'Connexion impossible. Message error:'.$e;
+    }
 
-												//Mike a fait ca
-												// try
-												// {
-												//     $dbh = new PDO('mysql:host=localhost;dbname=mike_ajax','root','');
-												//     $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
-												// }
-												// catch(PDOException $e)
-												//    {
-												//        echo 'Connexion impossible. Message error:'.$e;
-												//    }
+    if($_SERVER['REQUEST_METHOD'] == 'POST') //Si on a accédé à la page en POST
+    {
+		if(!empty($_POST)) //Si y'a qque chose dans POST
+		{
+			if(isset($_POST["id"])) //Si y'a id dans le POST, on prepare+bind une requete de delete sur l'id du POST
+			{			
+				$stmt = $dbh->prepare("DELETE FROM `users` WHERE `id` = :id");
+				$stmt->bindParam(':id', $_POST["id"]);
+			}
+			else //Si y'a pas d'id dans le POST => on prepare+bind une requete d'insert avec toutes les data du POST
+			{
+				$stmt = $dbh->prepare("INSERT INTO `users`(`first_name`, `last_name`, `poste`, `date_naissance`,) VALUES (:fistname, :lastname, :poste, :date_naiss)");
+				$stmt->bindParam(':fistname', $_POST["firstname"]);
+				$stmt->bindParam(':lastname', $_POST["lastname"]);
+				$stmt->bindParam(':date_naiss', $_POST["datenaiss"]);
+				$stmt->bindParam(':poste', $_POST["office"]);
+			}
+			//Execution de la requete
+			$stmt->execute();
+		}
+    }
+    elseif($_SERVER['REQUEST_METHOD'] == 'GET') //Sinon, si on a accédé à la page en GET
+    {
+		if(empty($_GET)) //Si GET vide
+			$stmt = $dbh->prepare("SELECT * FROM `users`"); //On prépare une requete d'affichage de tous les users
+		else //On prépare une requete d'affichage du user d'id présent dans le GET
+			$stmt = $dbh->prepare("SELECT * FROM `users` WHERE first_name = '".$_GET['id']."'");
+		
+		//Execution de la requete
+		$stmt->execute();
 
-	//Traitement des données du form
-	if(!(empty($_POST)))
-	{
-		//Gérer les balises html et les apostrophes
-		$nom = addslashes(strip_tags($_POST['nom'])); //on récupère la valeur du titre dans la sperglobale $_POST "alimentée" plus tôt apres validation du formulaire
-		$prenom = addslashes(strip_tags($_POST['prenom']));
-		$dateNaissance = addslashes(strip_tags($_POST['dateNaissance']));
-		$poste = addslashes(strip_tags($_POST['poste']));
-
-		//// Insertion en BDD en preparer+bind+execute pour bloquer injection SQL
-			// Preparation requete
-			$prepareReqInsert = $pdo->prepare("
-				INSERT INTO users (last_name,first_name,poste,date_naissance,date_create)
-				VALUES (:nom,:prenom,:poste,:dateDaissance,:dateCreation)
-											");
-			// Bind des valeurs avec des variables (d'où le bindParam)
-			$prepareReqInsert->bindParam(':nom',$nom, PDO::PARAM_STR);
-			$prepareReqInsert->bindParam(':prenom',$prenom, PDO::PARAM_STR);
-			$prepareReqInsert->bindParam(':poste',$poste, PDO::PARAM_STR);
-			$prepareReqInsert->bindParam(':dateDaissance',$dateNaissance, PDO::PARAM_STR);
-			$prepareReqInsert->bindParam(':dateCreation', date('Y-m-d H:i:s'), PDO::PARAM_STR);	
-
-			//Execution requete d'insetion en BDD
-			$prepareReqInsert->execute();
-
-		//Lien pour revenir au formulaire
-		echo "<a href='index.html#mon_beau_form'>Back To form</a>";
+		// On affiche le resultat de la requete
+		// var_dump($stmt->fetchAll());
+		echo json_encode($stmt->fetchAll());
 	}
 ?>

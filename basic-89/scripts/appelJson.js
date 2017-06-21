@@ -9,13 +9,19 @@ $(function() //déclenchée lors de chargement total du DOM
 
 	var request = $.ajax(
 	{
-	  url: "https://jsonplaceholder.typicode.com/users",
+	  //url: "https://jsonplaceholder.typicode.com/users",
+	  url: "http://localhost/J47-49-AjaxDev/cours-ajax/basic-89/users.php",
 	  method: "GET",
 	  dataype : "json" //Optionnel
 	});
 	 
 	request.done(function(jsonData)
 	{
+		//Si on parse pas ca chie (Mike sait pas pkoi)
+		console.log(jsonData)
+		jsonData = JSON.parse(jsonData);
+		console.log(jsonData)
+
 	 	///// AFFICHAGE des 'name' du json AVEC UN FOR
 	 	// for (i=0;i<jsonData.length;i++)
 		// {
@@ -25,11 +31,12 @@ $(function() //déclenchée lors de chargement total du DOM
 
 		///// AFFICHAGE des 'name' du json AVEC UN FOREACH
 		var content = ""; //Va stocker les infos json clickables
-
 		jsonData.forEach(function(unElmtDeJsonData)
 		{
+			//console.log(unElmtDeJsonData);
  	 		var nameAjaxElmt = unElmtDeJsonData.name;
-			content += '<li id="User-' + unElmtDeJsonData.id + '"><a href="#">' + unElmtDeJsonData.name + '</a></li>';
+			//content += '<li id="User-' + unElmtDeJsonData.id + '"><a href="#">' + unElmtDeJsonData.name + '</a></li>';
+			content += '<li id="User-' + unElmtDeJsonData.first_name + '"><a href="#">' + unElmtDeJsonData.last_name + '</a></li>';
 			//Je rajoute un id (pour que l'exo 3 où j'ai recopié sur Mike) fonctionne
 		});
 
@@ -49,24 +56,42 @@ $(function() //déclenchée lors de chargement total du DOM
 			/** Requet Ajax ciblé sur un seul element **/
 			var ficheUserCible = $.ajax(
 			{
-				url: "https://jsonplaceholder.typicode.com/users",
+				//url: "https://jsonplaceholder.typicode.com/users",
+				url : "http://localhost/J47-49-AjaxDev/cours-ajax/basic-89/users.php",
 				method: "GET",
 				data: { id: tabIdUser[1] }, //tabIdUSer[1] retourne l'id de json
-				dataType: "json" // optionel
+				//data: { first_name: tabIdUser[1] }, //tabIdUSer[1] retourne le firstName de json
+				dataType: "json" //optionel
 			});
 
 			ficheUserCible.done(function(dataUserCible)
 			{
-				console.info(dataUserCible[0].username+" "+dataUserCible[0].email);
+				//console.info(dataUserCible[0].username+" "+dataUserCible[0].email);
+				console.log(dataUserCible[0].first_name + " " + dataUserCible[0].last_name);
+
+				//EXO 9
+				$("#lastName").val(dataUserCible[0].last_name);
+				$("#firstName").val(dataUserCible[0].first_name);
+				$("#dateNaissance").val(dataUserCible[0].date_naissance);			
+				console.log($("#office").val());
+				let select = [];
+				select["CEO"] = 0;
+				select["CEO"] = 1;
+				select["CEO"] = 2;
+				$("#office option[value="+dataUser[0].poste+"]").prop("selected",true);
+			});
+
+			ficheUserCible.fail(function(jqXHR, textStatus)
+			{
+	 		 	alert("Request fiche user failed: " + textStatus);
 			});
 		});
 	});
-	 
+
 	request.fail(function(jqXHR, textStatus)
 	{
 	  alert( "Request failed: " + textStatus );
 	});
-
 
 
 	////////// EXO 4 : Les 4 parties 'Lorem ipsum....' a remplacer par le body d'un new json //////////

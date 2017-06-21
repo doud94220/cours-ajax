@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
-<title>Basic 89</title>
-<meta charset="iso-8859-1">
-<link rel="stylesheet" href="styles/layout.css" type="text/css">
-<!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
-      <!-- Appel fihier Js -->
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <title>Basic 89</title>
+  <meta charset="iso-8859-1">
+  <link rel="stylesheet" href="styles/layout.css" type="text/css">
+  <!-- je rajoute bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
+        <!-- Appel fihier Js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 </head>
+
 <body>
 <div class="wrapper row1">
   <header id="header" class="clear">
@@ -121,18 +125,26 @@
         </ul> -->
 
         <!-- JE REMPLACE LA ZONE PAR UN FORMULAIRE -->
+
+        <!--  Message pour formulaire -->
+        <div id="msgForm">
+        </div><br>
+
         <form action="users.php" method="POST" id="mon_beau_form">
+
+            <input type="hidden" name="id" id="id"><br><br>       
+
             <label for="nom">NOM : </label><br>
-            <input type="text" name="nom"><br><br>
+            <input type="text" name="nom" id="lastName"><br><br>
 
             <label for="prenom">Prenom : </label><br>
-            <input type="text" name="prenom"><br><br>
+            <input type="text" name="prenom" id="firstName"><br><br>
 
             <label for="dateNaissance">Date naissance : </label><br>
-            <input type="date" name="dateNaissance"><br><br> <!--  Bien penser à mettre type=date -->
+            <input type="date" name="dateNaissance" id="dateNaisance"><br><br> <!--  Bien penser à mettre type=date -->
 
             <label for="poste">Poste (fonction) : </label><br>
-            <select name="poste">
+            <select name="poste" id="office">
               <option value="">Faites un choix</option>
               <option value="CIO">CIO</option>
               <option value="CEO">CEO</option>
@@ -140,6 +152,7 @@
             </select><br><br>
 
             <input type="submit" value="Valider"><br><br>
+            <input type="button" value="Supprimer" id="deleteUser"><br><br>
         </form>
 
       </section>
@@ -188,7 +201,7 @@
   <!-- APPEL FICHIER JS -->
   <script type="text/javascript" src="scripts/carroussel.js"></script>
   <script type="text/javascript" src="scripts/appelJson.js"></script>
-
+  <script type="text/javascript" src="scripts/postJson.js"></script>
+ 
 </body>
-
 </html>
